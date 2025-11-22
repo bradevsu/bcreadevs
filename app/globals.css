@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Dark mode styles */
+.dark {
+  color-scheme: dark;
+}
+
+.dark .dark\:bg-gray-900 {
+  background-color: rgb(17 24 39);
+}
+
+.dark .dark\:bg-gray-800 {
+  background-color: rgb(31 41 55);
+}
+
+.dark .dark\:text-white {
+  color: rgb(255 255 255);
+}
+
+.dark .dark\:text-gray-300 {
+  color: rgb(209 213 219);
+}
+
+.dark .dark\:text-gray-400 {
+  color: rgb(156 163 175);
+}
+
+.dark .dark\:border-gray-800 {
+  border-color: rgb(31 41 55);
+}
+
+.dark .dark\:border-gray-700 {
+  border-color: rgb(55 65 81);
+}
+/* Fix navbar in dark mode */
+.dark nav {
+  background-color: rgb(17 24 39) !important;
+}
+
+.dark nav a {
+  color: rgb(209 213 219);
+}
+
+.dark nav a:hover {
+  color: rgb(96 165 250);
+}
+
+.dark nav .text-2xl {
+  color: rgb(255 255 255);
+}
