@@ -7,6 +7,7 @@ export default function Portfolio() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   
 
   const openModal = (project: any) => {
@@ -35,16 +36,17 @@ export default function Portfolio() {
       link: "#"
     },
     {
-      title: "Marketing Materials Design",
-      description: "Complete branding package including logos, flyers, business cards, and social media graphics.",
-      type: "Graphic Design",
-      media: "image",
-      tools: ["Canva", "Photoshop", "Illustrator"],
-      image: "https://images.unsplash.com/photo-1626785774625-ddcddc3445e9?w=800&auto=format&fit=crop",
+      title: "Promotional Video Projects",
+      description: "Editing eye-catching promo videos, helpful tips content, and highlight reels that make your brand stand out.",
+      type: "Video Editing",
+      media: "video",
+      tools: ["Canva", "Capcut", "11Labs"],
+      image: "https://logos-world.net/wp-content/uploads/2024/01/CapCut-Logo.jpg",
       gallery: [
-        "/images/img1.jpg",
-        "/images/img5.jpg",
-        "/images/img3.png"
+        "/images/vid1.mp4",
+        "/images/vid2.mp4",
+        "/images/vid4.mp4",
+        "/images/vid3.mp4"
       ],
       link: "#"
     },
@@ -54,11 +56,11 @@ export default function Portfolio() {
       type: "Web System",
       media: "image",
       tools: ["PHP", "Javascript", "MySQL", "Bootstrap", "Leaflet.js", "HTML", "CSS"],
-      image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&auto=format&fit=crop",
+      image: "https://www.devopsschool.com/blog/wp-content/uploads/2022/03/php-programming-language.jpg",
       gallery: [
-        "/images/img1.jpg",
-        "/images/img5.jpg",
-        "/images/img3.png"
+        "/images/img10.png",
+        "/images/img11.png",
+        "/images/img12.png"
       ],
       link: "#"
     },
@@ -252,11 +254,11 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Projects Section */}
-        <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800">
+          {/* Projects Section */}
+        <section id="projects" className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 text-center">Portfolio</h2>
-            <p className="text-center text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3 text-center">Portfolio</h2>
+            <p className="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
               A showcase of my work in web development, graphic design, video editing, and digital marketing
             </p>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -340,22 +342,37 @@ export default function Portfolio() {
                 <div className="mb-6">
                   <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Project Gallery</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                     {selectedProject.gallery.map((img: string, index: number) => (
-                      <div key={index} className="relative group overflow-hidden rounded-lg">
-                        <img 
-                          src={img} 
-                          alt={`${selectedProject.title} - Image ${index + 1}`}
-                          className="w-full h-64 object-cover group-hover:scale-110 transition duration-300"
-                        />
-                        {selectedProject.media === 'video' && index === 0 && (
-                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                            <Play className="w-16 h-16 text-white opacity-80" />
+                    {selectedProject.gallery?.map((item: string, index: number) => (
+                      <div key={index} className="relative group overflow-hidden rounded-lg bg-black">
+                        {item.endsWith('.mp4') || item.endsWith('.webm') || item.endsWith('.mov') ? (
+                          <video 
+                            controls
+                            className="w-full max-h-96 object-contain rounded-lg"
+                            src={item}
+                            style={{ aspectRatio: 'auto' }}
+                          >
+                            Your browser does not support the video tag.
+                          </video>
+                        ) : (
+                          <div className="cursor-pointer" onClick={() => setLightboxImage(item)}>
+                            <img 
+                              src={item} 
+                              alt={`${selectedProject.title} - Image ${index + 1}`}
+                              className="w-full h-64 object-cover group-hover:scale-110 transition duration-300"
+                            />
+                            {selectedProject.media === 'video' && index === 0 && (
+                              <div className="absolute inset-0 bg-black/40 flex items-center justify-center pointer-events-none">
+                                <Play className="w-16 h-16 text-white opacity-80" />
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
                     ))}
                   </div>
                 </div>
+
+
 
                 {/* Project Description */}
                 <div className="mb-6">
@@ -604,6 +621,28 @@ export default function Portfolio() {
             </div>
           </div>
         </section>
+        
+                {/* Image Lightbox */}
+        {lightboxImage && (
+          <div 
+            className="fixed inset-0 bg-black/95 z-[60] flex items-center justify-center p-4"
+            onClick={() => setLightboxImage(null)}
+          >
+            <button
+              onClick={() => setLightboxImage(null)}
+              className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-lg transition z-10"
+            >
+              <X className="w-8 h-8 text-white" />
+            </button>
+            <img 
+              src={lightboxImage} 
+              alt="Full size preview"
+              className="max-w-full max-h-[90vh] object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        )}
+
 
         {/* Footer */}
         <footer className="py-8 px-4 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
